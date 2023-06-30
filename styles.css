@@ -1,0 +1,66 @@
+:root {
+  --neutral: #000;
+  --on-primary-container: #77787c;
+  --on-primary: #5258b6;
+  --on-secondary: #68727e;
+  --primary-container: #fff;
+  --primary-smooth-gray: #f5f6fa;
+  --secondary: #c4c6ef;
+  --tertiary-container: #f1b9c0;
+  --tertiary: #f06264;
+}
+
+body {
+  margin: 0;
+  padding: 100px;
+  font-family: "Rubik", sans-serif;
+  line-height: calc(1rem * 1.5);
+}
+
+.container {
+  width: 900px;
+  margin: 0 auto;
+  border: 1px solid red;
+  height: 100vh;
+}
+
+/* Button */
+.increment-button {
+  background-color: var(--primary-smooth-gray);
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.increment-number {
+  font-weight: bold;
+  color: var(--on-primary);
+}
+
+/* tweets */
+.user-tweet {
+  display: flex;
+  align-items: start;
+  gap: 24px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.username-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.username {
+  font-weight: bold;
+  color: var(--neutral);
+  gap: 16px;
+}

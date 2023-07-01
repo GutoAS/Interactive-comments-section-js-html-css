@@ -8,6 +8,8 @@
   --secondary: #c4c6ef;
   --tertiary-container: #f1b9c0;
   --tertiary: #f06264;
+  --elevation-one: 0px 1px 3px 1px rgba(0, 0, 0, 0.15),
+    0px 1px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 html {
@@ -31,7 +33,7 @@ body {
 }
 
 .container {
-  width: 900px;
+  width: 800px;
   margin: 0 auto;
 }
 
@@ -102,6 +104,42 @@ button {
   align-self: start;
 }
 
+.button-common:hover {
+  background-color: var(--secondary);
+}
+
+.fill-button {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex: 1;
+}
+
+@media only screen and (max-width: 600px) {
+  .fill-button {
+    display: none;
+  }
+}
+
+.fill-button-mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .fill-button-mobile {
+    display: flex;
+    flex: 1;
+    justify-content: end;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .common-button-display {
+    display: none;
+  }
+}
+
 /*! tweets */
 .user-tweet {
   display: flex;
@@ -151,31 +189,6 @@ button {
   color: var(--on-primary-container);
 }
 
-.fill-button {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  flex: 1;
-}
-
-@media only screen and (max-width: 600px) {
-  .fill-button {
-    display: none;
-  }
-}
-
-.fill-button-mobile {
-  display: none;
-}
-@media only screen and (max-width: 600px) {
-  .fill-button-mobile {
-    display: flex;
-    flex: 1;
-    justify-content: end;
-    align-items: center;
-  }
-}
-
 .tweet-interaction-mobile {
   display: flex;
 }
@@ -194,8 +207,39 @@ button {
   margin-top: 30px;
   gap: 20px;
   flex-direction: row;
+  background-color: var(--primary-container);
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .current-user-comment {
+    flex-direction: column-reverse;
+  }
 }
 
 textarea {
   resize: none;
+  flex: 1;
+  border: none;
+  outline-color: var(--on-primary-container);
+  height: 100px;
+  box-shadow: var(--elevation-one);
+  border-radius: 5px;
+  padding: 16px 10px 0px 24px;
+  color: var(--on-primary-container);
+  font-family: inherit;
+  font-size: 1rem;
+}
+@media only screen and (max-width: 600px) {
+  textarea {
+    flex: none;
+  }
+}
+
+.current-user-interaction {
+  display: flex;
+  align-items: center;
+  justify-content: start;
 }

@@ -10,41 +10,119 @@
   --tertiary: #f06264;
 }
 
+html {
+  margin: 0;
+  padding: 0;
+}
 body {
   margin: 0;
-  padding: 100px;
+  padding: 100px 0 0 0;
   font-family: "Rubik", sans-serif;
   line-height: calc(1rem * 1.5);
+  background-color: var(--primary-smooth-gray);
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    margin: 0;
+    padding: 60px 8px 0 8px;
+  }
 }
 
 .container {
   width: 900px;
   margin: 0 auto;
-  border: 1px solid red;
-  height: 100vh;
 }
 
-/* Button */
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100%;
+  }
+}
+
+/*! typography */
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.bold-primary-text {
+  font-weight: bold;
+  color: var(--on-primary);
+}
+
+/*! Button */
 .increment-button {
   background-color: var(--primary-smooth-gray);
-  width: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 12px;
+  gap: 8px;
+  color: var(--on-primary-container);
+  align-self: start;
+  padding: 5px 10px;
+  font-size: 1rem;
 }
 
-.increment-number {
+@media only screen and (max-width: 600px) {
+  .increment-button {
+    flex-direction: row;
+  }
+}
+
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 10px 12px;
+  font-family: inherit;
   font-weight: bold;
-  color: var(--on-primary);
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
 }
 
-/* tweets */
+.icon-size {
+  font-size: 18px;
+}
+
+.button-primary:hover {
+  color: var(--secondary);
+}
+
+.button-common {
+  background-color: var(--on-primary);
+  color: var(--primary-container);
+  border-radius: 10px;
+  padding: 10px 24px;
+  align-self: start;
+}
+
+/*! tweets */
 .user-tweet {
   display: flex;
-  align-items: start;
+  padding: 20px;
+  background-color: var(--primary-container);
   gap: 24px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-tweet {
+    flex-direction: column-reverse;
+  }
+}
+
+.user-comment {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .avatar {
@@ -56,11 +134,68 @@ body {
 .username-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  gap: 16px;
+}
+
+.user-text-comment {
+  color: var(--on-primary-container);
 }
 
 .username {
   font-weight: bold;
   color: var(--neutral);
-  gap: 16px;
+}
+
+.tweet-time {
+  color: var(--on-primary-container);
+}
+
+.fill-button {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex: 1;
+}
+
+@media only screen and (max-width: 600px) {
+  .fill-button {
+    display: none;
+  }
+}
+
+.fill-button-mobile {
+  display: none;
+}
+@media only screen and (max-width: 600px) {
+  .fill-button-mobile {
+    display: flex;
+    flex: 1;
+    justify-content: end;
+    align-items: center;
+  }
+}
+
+.tweet-interaction-mobile {
+  display: flex;
+}
+
+@media only screen and (max-width: 600px) {
+  .tweet-interaction-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+}
+
+/*! current user tweet */
+.current-user-comment {
+  display: flex;
+  margin-top: 30px;
+  gap: 20px;
+  flex-direction: row;
+}
+
+textarea {
+  resize: none;
 }

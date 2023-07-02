@@ -148,11 +148,54 @@ button {
   gap: 24px;
   border-radius: 5px;
   box-sizing: border-box;
+  margin-bottom: 30px;
 }
 
 @media only screen and (max-width: 600px) {
   .user-tweet {
     flex-direction: column-reverse;
+  }
+}
+
+.user-tweet-reply {
+  display: flex;
+  padding: 20px;
+  background-color: var(--primary-container);
+  gap: 24px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  max-width: 700px;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-tweet-reply {
+    flex-direction: column-reverse;
+  }
+}
+
+.replies {
+  display: flex;
+  gap: 60px;
+  justify-content: end;
+  align-items: end;
+}
+
+@media only screen and (max-width: 600px) {
+  .replies {
+    gap: 30px;
+  }
+}
+
+.vertical-stroke {
+  width: 2px;
+  align-self: stretch;
+  background-color: var(--secondary);
+}
+
+@media only screen and (max-width: 600px) {
+  .vertical-stroke {
+    margin-left: 12px;
   }
 }
 
@@ -240,6 +283,6 @@ textarea {
 
 .current-user-interaction {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: start;
 }

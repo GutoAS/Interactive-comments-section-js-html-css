@@ -21,44 +21,89 @@
   </head>
   <body>
     <div class="container">
-      <div class="user-tweet">
-        <!--* increment-button -->
-        <div class="tweet-interaction-mobile">
-          <div class="increment-button">
-            <i class="fa-solid fa-plus"></i>
-            <p class="bold-primary-text">12</p>
-            <i class="fa-solid fa-minus icon-size"></i>
-          </div>
-          <div class="fill-button-mobile">
-            <button class="bold-primary-text button-primary">
-              <i class="fa-solid fa-reply icon-size"></i>
-              <span>Reply</span>
-            </button>
-          </div>
-        </div>
-        <div class="user-comment">
-          <div class="username-bar">
-            <img
-              src="./images/avatars/image-amyrobson.png"
-              alt="user profile image"
-              class="avatar"
-            />
-            <p class="username">amyrobson</p>
-            <p class="tweet-time">1 month ago</p>
-            <div class="fill-button">
+      <div id="commentsContainerEl">
+        <!-- <div class="user-tweet" id="userTweet">
+          <div class="tweet-interaction-mobile">
+            <div class="increment-button">
+              <i class="fa-solid fa-plus"></i>
+              <p class="bold-primary-text">12</p>
+              <i class="fa-solid fa-minus icon-size"></i>
+            </div>
+            <div class="fill-button-mobile">
               <button class="bold-primary-text button-primary">
                 <i class="fa-solid fa-reply icon-size"></i>
                 <span>Reply</span>
               </button>
             </div>
           </div>
-          <p class="user-text-comment">
-            Impressive! Though it seems the drag feature could be improved. But
-            overall it looks incredible. You've nailed the design and the
-            responsiveness at various breakpoints works really well.
-          </p>
+          <div class="user-comment">
+            <div class="username-bar">
+              <img
+                src="./images/avatars/image-amyrobson.png"
+                alt="user profile image"
+                class="avatar"
+              />
+              <p class="username">amyrobson</p>
+              <p class="tweet-time">1 month ago</p>
+              <div class="fill-button">
+                <button class="bold-primary-text button-primary">
+                  <i class="fa-solid fa-reply icon-size"></i>
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
+            <p class="user-text-comment">
+              Impressive! Though it seems the drag feature could be improved.
+              But overall it looks incredible. You've nailed the design and the
+              responsiveness at various breakpoints works really well.
+            </p>
+          </div>
         </div>
+        <div class="replies">
+          <div class="vertical-stroke"></div>
+          <div class="tweet-replies">
+            <div class="user-tweet-reply" id="userTweet">
+              <div class="tweet-interaction-mobile">
+                <div class="increment-button">
+                  <i class="fa-solid fa-plus"></i>
+                  <p class="bold-primary-text">12</p>
+                  <i class="fa-solid fa-minus icon-size"></i>
+                </div>
+                <div class="fill-button-mobile">
+                  <button class="bold-primary-text button-primary">
+                    <i class="fa-solid fa-reply icon-size"></i>
+                    <span>Reply</span>
+                  </button>
+                </div>
+              </div>
+              <div class="user-comment">
+                <div class="username-bar">
+                  <img
+                    src="./images/avatars/image-amyrobson.png"
+                    alt="user profile image"
+                    class="avatar"
+                  />
+                  <p class="username">amyrobson</p>
+                  <p class="tweet-time">1 month ago</p>
+                  <div class="fill-button">
+                    <button class="bold-primary-text button-primary">
+                      <i class="fa-solid fa-reply icon-size"></i>
+                      <span>Reply</span>
+                    </button>
+                  </div>
+                </div>
+                <p class="user-text-comment">
+                  Impressive! Though it seems the drag feature could be
+                  improved. But overall it looks incredible. You've nailed the
+                  design and the responsiveness at various breakpoints works
+                  really well.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> -->
       </div>
+
       <div class="current-user-comment">
         <div class="current-user-interaction">
           <img
@@ -67,11 +112,22 @@
             class="avatar"
           />
           <div class="fill-button-mobile">
-            <button class="button-common">Send</button>
+            <button class="button-common" data-send-mobile-btn="sendButton">
+              Send
+            </button>
           </div>
         </div>
-        <textarea name="" id="" placeholder="Add a comment..."></textarea>
-        <button class="button-common common-button-display">Send</button>
+        <textarea
+          name=""
+          id="currentUserComment"
+          placeholder="Add a comment..."
+        ></textarea>
+        <button
+          data-send-desktop-btn="sendButton"
+          class="button-common common-button-display"
+        >
+          Send
+        </button>
       </div>
     </div>
 

@@ -18,7 +18,7 @@ html {
 }
 body {
   margin: 0;
-  padding: 100px 0 0 0;
+  padding: 100px 0 30px 0;
   font-family: "Rubik", sans-serif;
   line-height: calc(1rem * 1.5);
   background-color: var(--primary-smooth-gray);
@@ -28,7 +28,7 @@ body {
 @media only screen and (max-width: 600px) {
   body {
     margin: 0;
-    padding: 60px 8px 0 8px;
+    padding: 60px 8px 30px 8px;
   }
 }
 

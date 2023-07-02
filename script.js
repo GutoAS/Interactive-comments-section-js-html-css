@@ -1,6 +1,5 @@
 import { dataDB } from "./data.js";
-
-const commentsContainerEl = document.getElementById("commentsContainerEl");
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 document.addEventListener("click", function (e) {
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
@@ -26,10 +25,22 @@ document.addEventListener("click", function (e) {
 function handleCurrentUserSendBtn() {
   const currentUserComment = document.getElementById("currentUserComment");
   if (currentUserComment.value) {
-    console.log(currentUserComment.value);
+    dataDB.comments.push({
+      id: uuidv4(),
+      content: currentUserComment.value,
+      createdAt: "Today",
+      score: 0,
+      user: {
+        ...dataDB.currentUser,
+      },
+      replies: [],
+    });
+    render();
   }
+
   currentUserComment.value = "";
 }
+
 function incrementCommentScore(id) {
   const comment = dataDB.comments.find((comment) => comment.id == id);
   comment.score++;
@@ -175,28 +186,7 @@ function getReplies(id) {
 }
 
 function render() {
-  commentsContainerEl.innerHTML = getComments();
+  document.getElementById("commentsContainerEl").innerHTML = getComments();
 }
 
 render();
-
-//! This for test
-function pushReplies() {
-  dataDB.comments[0].replies.push({
-    id: 10,
-    content:
-      "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
-    createdAt: "1 week ago",
-    score: 4,
-    replyingTo: "maxblagun",
-    user: {
-      image: {
-        png: "./images/avatars/image-ramsesmiron.png",
-        webp: "./images/avatars/image-ramsesmiron.webp",
-      },
-      username: "ramsesmiron",
-    },
-  });
-  render();
-}
-pushReplies();

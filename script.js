@@ -274,9 +274,13 @@ function getCurrentUserReplies(id) {
               <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
             </div>
             <div class="fill-button-mobile">
+              <button class="bold-primary-text button-tertiary">
+              <i class="fa-solid fa-trash-can icon-size"></i>
+              <span>Delete</span>
+              </button>
               <button class="bold-primary-text button-primary">
-                <i class="fa-solid fa-reply icon-size"></i>
-                <span>Reply</span>
+                <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+                <span>Edit</span>
               </button>
             </div>
           </div>
@@ -287,12 +291,19 @@ function getCurrentUserReplies(id) {
                 alt="user profile image"
                 class="avatar"
               />
+              <div class="current-user-badge">
+                <p>you</p>
+              </div>
               <p class="username">${reply.user.username}</p>
               <p class="tweet-time">${reply.createdAt}</p>
               <div class="fill-button">
+                <button class="bold-primary-text button-tertiary">
+                <i class="fa-solid fa-trash-can icon-size"></i>
+                <span>Delete</span>
+                </button>
                 <button class="bold-primary-text button-primary">
-                  <i class="fa-solid fa-reply icon-size"></i>
-                  <span>Reply</span>
+                  <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+                  <span>Edit</span>
                 </button>
               </div>
             </div>

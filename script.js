@@ -18,7 +18,7 @@ document.addEventListener("click", function (e) {
   if (e.target.dataset.minusBtn) {
     decrementCommentScore(e.target.dataset.minusBtn);
   }
-  if (e.target.id === "replyButton") {
+  if (e.target.id === "replyButton" || e.target.id === "replyButtonMobile") {
     handleReplyButtonClick();
   }
 });
@@ -89,7 +89,7 @@ function getComments() {
       <div class="fill-button-mobile">
         <button class="bold-primary-text button-primary">
           <i class="fa-solid fa-reply icon-size"></i>
-          <span >Reply</span>
+          <span id="replyButtonMobile">Reply</span>
         </button>
       </div>
     </div>

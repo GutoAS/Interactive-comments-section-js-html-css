@@ -36,7 +36,7 @@ function handleCurrentUserSendBtn() {
       replies: [],
     });
     render();
-    console.log(getCurrentUserReply());
+    console.log(getCurrentUserComment());
   }
 
   currentUserComment.value = "";
@@ -192,9 +192,9 @@ function render() {
   document.getElementById("commentsContainerEl").innerHTML = getComments();
 }
 
-render();
+// render();
 
-function getCurrentUserReply() {
+function getCurrentUserComment() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
     if (comment.user.username === "juliusomo") {
@@ -222,6 +222,9 @@ function getCurrentUserReply() {
           alt="user profile image"
           class="avatar"
         />
+        <div class="current-user-badge">
+        <p>you</p>
+        </div>
         <p class="username">${comment.user.username}</p>
         <p class="tweet-time">${comment.createdAt}</p>
         <div class="fill-button">

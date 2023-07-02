@@ -287,6 +287,17 @@ textarea {
   justify-content: start;
 }
 
+.current-user-badge {
+  padding: 4px 8px;
+  background-color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  color: var(--primary-container);
+  font-weight: 500;
+}
+
 .display-none {
   display: none;
 }

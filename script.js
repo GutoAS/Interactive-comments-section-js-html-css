@@ -7,10 +7,16 @@ document.addEventListener("click", function (e) {
     handleCurrentUserSendBtn();
   }
   if (e.target.dataset.plusBtn) {
-    incrementScore(e.target.dataset.plusBtn);
+    incrementCommentScore(e.target.dataset.plusBtn);
+  }
+  if (e.target.dataset.plusBtnReply) {
+    incrementReplyScore(e.target.dataset.plusBtnReply);
+  }
+  if (e.target.dataset.minusBtnReply) {
+    decrementReplyScore(e.target.dataset.minusBtnReply);
   }
   if (e.target.dataset.minusBtn) {
-    decrementScore(e.target.dataset.minusBtn);
+    decrementCommentScore(e.target.dataset.minusBtn);
   }
 });
 
@@ -21,13 +27,35 @@ function handleCurrentUserSendBtn() {
   }
   currentUserComment.value = "";
 }
-function incrementScore(id) {
+function incrementCommentScore(id) {
   const comment = dataDB.comments.find((comment) => comment.id == id);
   comment.score++;
   render();
 }
 
-function decrementScore(id) {
+function incrementReplyScore(id) {
+  dataDB.comments.forEach((comment) => {
+    comment.replies.forEach((reply) => {
+      if (reply.id == id) {
+        reply.score++;
+        render();
+      }
+    });
+  });
+}
+
+function decrementReplyScore(id) {
+  dataDB.comments.forEach((comment) => {
+    comment.replies.forEach((reply) => {
+      if (reply.id == id && reply.score > 0) {
+        reply.score--;
+        render();
+      }
+    });
+  });
+}
+
+function decrementCommentScore(id) {
   const comment = dataDB.comments.find((comment) => comment.id == id);
   if (comment.score > 0) {
     comment.score--;
@@ -96,9 +124,9 @@ function getReplies(id) {
       <div class="user-tweet-reply" id="userTweet">
         <div class="tweet-interaction-mobile">
           <div class="increment-button">
-            <i class="fa-solid fa-plus"></i>
-            <p class="bold-primary-text">12</p>
-            <i class="fa-solid fa-minus icon-size"></i>
+            <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
+            <p class="bold-primary-text">${reply.score}</p>
+            <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
           </div>
           <div class="fill-button-mobile">
             <button class="bold-primary-text button-primary">

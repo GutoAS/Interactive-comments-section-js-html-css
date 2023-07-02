@@ -1,6 +1,8 @@
 import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
+const deletePrompt = document.getElementById("deletePrompt");
+
 document.addEventListener("click", function (e) {
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
     handleCurrentUserSendBtn();
@@ -19,6 +21,12 @@ document.addEventListener("click", function (e) {
   }
   if (e.target.id === "replyButton" || e.target.id === "replyButtonMobile") {
     handleReplyButtonClick();
+  }
+  if (e.target.dataset.deleteCommentBtn) {
+    deletePrompt.style.display = "block";
+  }
+  if (e.target.id === "cancelBtn") {
+    deletePrompt.style.display = "none";
   }
 });
 
@@ -151,7 +159,7 @@ function getCurrentUserComment() {
       <div class="fill-button-mobile">
         <button class="bold-primary-text button-tertiary">
         <i class="fa-solid fa-trash-can icon-size"></i>
-        <span>Delete</span>
+        <span data-delete-comment-btn="${comment.id}">Delete</span>
         </button>
         <button class="bold-primary-text button-primary">
           <i class="fa-sharp fa-solid fa-pen icon-size"></i>
@@ -174,7 +182,7 @@ function getCurrentUserComment() {
         <div class="fill-button">
           <button class="bold-primary-text button-tertiary">
           <i class="fa-solid fa-trash-can icon-size"></i>
-          <span>Delete</span>
+          <span data-delete-comment-btn="${comment.id}">Delete</span>
           </button>
           <button class="bold-primary-text button-primary">
             <i class="fa-sharp fa-solid fa-pen icon-size"></i>

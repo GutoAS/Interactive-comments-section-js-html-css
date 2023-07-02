@@ -1,10 +1,10 @@
 import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+const commentId = {
+  id: "",
+};
 
 document.addEventListener("click", function (e) {
-  const commentId = {
-    id: "",
-  };
   const deletePrompt = document.getElementById("deletePrompt");
 
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
@@ -29,6 +29,11 @@ document.addEventListener("click", function (e) {
     deletePrompt.style.display = "block";
     commentId.id = e.target.dataset.deleteCommentBtn;
   }
+  if (e.target.dataset.deleteReplyBtn) {
+    deletePrompt.style.display = "block";
+    commentId.id = e.target.dataset.deleteReplyBtn;
+  }
+
   if (e.target.id === "cancelBtn") {
     deletePrompt.style.display = "none";
   }
@@ -101,9 +106,28 @@ function handleReplyButtonClick() {
 }
 
 function handleDeleteComment(id) {
-  const comment = dataDB.comments.find((comment) => comment.id === id);
-  const index = dataDB.comments.indexOf(comment);
-  dataDB.comments.splice(index, 1);
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+  let replyObj = "";
+  dataDB.comments.forEach((comment) => {
+    comment.replies.forEach((reply) => {
+      if (reply.id == id) {
+        replyObj = reply;
+      }
+    });
+  });
+  if (comment) {
+    const index = dataDB.comments.indexOf(comment);
+    dataDB.comments.splice(index, 1);
+  }
+  if (replyObj) {
+    console.log(replyObj);
+    let index = "";
+    dataDB.comments.forEach(
+      (comment) => (index = comment.replies.indexOf(replyObj))
+    );
+    dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
+  }
+
   render();
 }
 
@@ -294,7 +318,7 @@ function getCurrentUserReplies(id) {
             <div class="fill-button-mobile">
               <button class="bold-primary-text button-tertiary">
               <i class="fa-solid fa-trash-can icon-size"></i>
-              <span>Delete</span>
+              <span data-delete-reply-btn="${reply.id}">Delete</span>
               </button>
               <button class="bold-primary-text button-primary">
                 <i class="fa-sharp fa-solid fa-pen icon-size"></i>
@@ -317,7 +341,7 @@ function getCurrentUserReplies(id) {
               <div class="fill-button">
                 <button class="bold-primary-text button-tertiary">
                 <i class="fa-solid fa-trash-can icon-size"></i>
-                <span>Delete</span>
+                <span data-delete-reply-btn="${reply.id}">Delete</span>
                 </button>
                 <button class="bold-primary-text button-primary">
                   <i class="fa-sharp fa-solid fa-pen icon-size"></i>

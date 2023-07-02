@@ -286,3 +286,7 @@ textarea {
   align-items: start;
   justify-content: start;
 }
+
+.display-none {
+  display: none;
+}

@@ -18,6 +18,9 @@ document.addEventListener("click", function (e) {
   if (e.target.dataset.minusBtn) {
     decrementCommentScore(e.target.dataset.minusBtn);
   }
+  if (e.target.id === "replyButton") {
+    handleReplyButtonClick();
+  }
 });
 
 function handleCurrentUserSendBtn() {
@@ -63,6 +66,13 @@ function decrementCommentScore(id) {
   render();
 }
 
+function handleReplyButtonClick() {
+  const replies = document.getElementsByClassName("replies");
+  for (let i = 0; i < replies.length; i++) {
+    replies[i].classList.toggle("display-none");
+  }
+}
+
 function getComments() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
@@ -79,7 +89,7 @@ function getComments() {
       <div class="fill-button-mobile">
         <button class="bold-primary-text button-primary">
           <i class="fa-solid fa-reply icon-size"></i>
-          <span>Reply</span>
+          <span >Reply</span>
         </button>
       </div>
     </div>
@@ -93,9 +103,9 @@ function getComments() {
         <p class="username">${comment.user.username}</p>
         <p class="tweet-time">${comment.createdAt}</p>
         <div class="fill-button">
-          <button class="bold-primary-text button-primary">
+          <button  class="bold-primary-text button-primary">
             <i class="fa-solid fa-reply icon-size"></i>
-            <span>Reply</span>
+            <span id="replyButton">Reply</span>
           </button>
         </div>
       </div>
@@ -118,7 +128,7 @@ function getReplies(id) {
   if (comment.replies.length > 0) {
     comment.replies.forEach((reply) => {
       replyHtml += `
-<div class="replies">
+<div class="replies" >
     <div class="vertical-stroke"></div>
     <div class="tweet-replies">
       <div class="user-tweet-reply" id="userTweet">
@@ -169,3 +179,24 @@ function render() {
 }
 
 render();
+
+//! This for test
+function pushReplies() {
+  dataDB.comments[0].replies.push({
+    id: 10,
+    content:
+      "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+    createdAt: "1 week ago",
+    score: 4,
+    replyingTo: "maxblagun",
+    user: {
+      image: {
+        png: "./images/avatars/image-ramsesmiron.png",
+        webp: "./images/avatars/image-ramsesmiron.webp",
+      },
+      username: "ramsesmiron",
+    },
+  });
+  render();
+}
+pushReplies();

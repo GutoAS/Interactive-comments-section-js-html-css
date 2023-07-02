@@ -1,13 +1,12 @@
 import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
-const deletePrompt = document.getElementById("deletePrompt");
-
-const commentId = {
-  id: "",
-};
-
 document.addEventListener("click", function (e) {
+  const commentId = {
+    id: "",
+  };
+  const deletePrompt = document.getElementById("deletePrompt");
+
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
     handleCurrentUserSendBtn();
   }

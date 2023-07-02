@@ -92,8 +92,18 @@ button {
   font-size: 18px;
 }
 
-.button-primary:hover {
+.button-primary:hover,
+.button-primary:active {
   color: var(--secondary);
+}
+
+.button-tertiary {
+  color: var(--tertiary);
+}
+
+.button-tertiary:hover,
+.button-tertiary:active {
+  color: var(--tertiary-container);
 }
 
 .button-common {
@@ -104,7 +114,8 @@ button {
   align-self: start;
 }
 
-.button-common:hover {
+.button-common:hover,
+.button-common:active {
   background-color: var(--secondary);
 }
 

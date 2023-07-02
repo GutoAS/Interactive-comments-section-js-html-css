@@ -193,8 +193,6 @@ function render() {
     getComments() + getCurrentUserComment();
 }
 
-render();
-
 function getCurrentUserComment() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
@@ -210,9 +208,13 @@ function getCurrentUserComment() {
         }"></i>
       </div>
       <div class="fill-button-mobile">
+        <button class="bold-primary-text button-tertiary">
+        <i class="fa-solid fa-trash-can icon-size"></i>
+        <span>Delete</span>
+        </button>
         <button class="bold-primary-text button-primary">
-          <i class="fa-solid fa-reply icon-size"></i>
-          <span id="replyButtonMobile">Reply</span>
+          <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+          <span>Edit</span>
         </button>
       </div>
     </div>
@@ -229,9 +231,13 @@ function getCurrentUserComment() {
         <p class="username">${comment.user.username}</p>
         <p class="tweet-time">${comment.createdAt}</p>
         <div class="fill-button">
-          <button  class="bold-primary-text button-primary">
-            <i class="fa-solid fa-reply icon-size"></i>
-            <span id="replyButton">Reply</span>
+          <button class="bold-primary-text button-tertiary">
+          <i class="fa-solid fa-trash-can icon-size"></i>
+          <span>Delete</span>
+          </button>
+          <button class="bold-primary-text button-primary">
+            <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+            <span>Edit</span>
           </button>
         </div>
       </div>
@@ -247,3 +253,5 @@ function getCurrentUserComment() {
 
   return comments;
 }
+
+render();

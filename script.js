@@ -134,66 +134,6 @@ function getComments() {
   return comments;
 }
 
-function getReplies(id) {
-  let replyHtml = "";
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-
-  if (comment.replies.length > 0) {
-    comment.replies.forEach((reply) => {
-      if (reply.user.username != "juliusomo") {
-        replyHtml += `
-    <div class="replies" >
-        <div class="vertical-stroke"></div>
-        <div class="tweet-replies">
-          <div class="user-tweet-reply" id="userTweet">
-            <div class="tweet-interaction-mobile">
-              <div class="increment-button">
-                <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
-                <p class="bold-primary-text">${reply.score}</p>
-                <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
-              </div>
-              <div class="fill-button-mobile">
-                <button class="bold-primary-text button-primary">
-                  <i class="fa-solid fa-reply icon-size"></i>
-                  <span>Reply</span>
-                </button>
-              </div>
-            </div>
-            <div class="user-comment">
-              <div class="username-bar">
-                <img
-                  src="${reply.user.image.png}"
-                  alt="user profile image"
-                  class="avatar"
-                />
-                <p class="username">${reply.user.username}</p>
-                <p class="tweet-time">${reply.createdAt}</p>
-                <div class="fill-button">
-                  <button class="bold-primary-text button-primary">
-                    <i class="fa-solid fa-reply icon-size"></i>
-                    <span>Reply</span>
-                  </button>
-                </div>
-              </div>
-              <p class="user-text-comment">
-                ${reply.content}
-              </p>
-            </div>
-          </div>
-        </div>
-    </div> 
-      `;
-      }
-    });
-  }
-  return replyHtml;
-}
-
-function render() {
-  document.getElementById("commentsContainerEl").innerHTML =
-    getComments() + getCurrentUserComment();
-}
-
 function getCurrentUserComment() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
@@ -253,6 +193,61 @@ function getCurrentUserComment() {
   });
 
   return comments;
+}
+
+function getReplies(id) {
+  let replyHtml = "";
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+
+  if (comment.replies.length > 0) {
+    comment.replies.forEach((reply) => {
+      if (reply.user.username != "juliusomo") {
+        replyHtml += `
+    <div class="replies" >
+        <div class="vertical-stroke"></div>
+        <div class="tweet-replies">
+          <div class="user-tweet-reply" id="userTweet">
+            <div class="tweet-interaction-mobile">
+              <div class="increment-button">
+                <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
+                <p class="bold-primary-text">${reply.score}</p>
+                <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
+              </div>
+              <div class="fill-button-mobile">
+                <button class="bold-primary-text button-primary">
+                  <i class="fa-solid fa-reply icon-size"></i>
+                  <span>Reply</span>
+                </button>
+              </div>
+            </div>
+            <div class="user-comment">
+              <div class="username-bar">
+                <img
+                  src="${reply.user.image.png}"
+                  alt="user profile image"
+                  class="avatar"
+                />
+                <p class="username">${reply.user.username}</p>
+                <p class="tweet-time">${reply.createdAt}</p>
+                <div class="fill-button">
+                  <button class="bold-primary-text button-primary">
+                    <i class="fa-solid fa-reply icon-size"></i>
+                    <span>Reply</span>
+                  </button>
+                </div>
+              </div>
+              <p class="user-text-comment">
+                ${reply.content}
+              </p>
+            </div>
+          </div>
+        </div>
+    </div> 
+      `;
+      }
+    });
+  }
+  return replyHtml;
 }
 
 function getCurrentUserReplies(id) {
@@ -319,6 +314,11 @@ function getCurrentUserReplies(id) {
     });
   }
   return replyHtml;
+}
+
+function render() {
+  document.getElementById("commentsContainerEl").innerHTML =
+    getComments() + getCurrentUserComment();
 }
 
 render();

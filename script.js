@@ -189,10 +189,11 @@ function getReplies(id) {
 }
 
 function render() {
-  document.getElementById("commentsContainerEl").innerHTML = getComments();
+  document.getElementById("commentsContainerEl").innerHTML =
+    getComments() + getCurrentUserComment();
 }
 
-// render();
+render();
 
 function getCurrentUserComment() {
   let comments = "";

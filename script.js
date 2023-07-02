@@ -36,6 +36,7 @@ function handleCurrentUserSendBtn() {
       replies: [],
     });
     render();
+    console.log(getCurrentUserReply());
   }
 
   currentUserComment.value = "";
@@ -87,7 +88,8 @@ function handleReplyButtonClick() {
 function getComments() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
-    comments += `
+    if (comment.user.username != "juliusomo") {
+      comments += `
     <div class="user-tweet" id="userTweet">
     <div class="tweet-interaction-mobile">
       <div class="increment-button">
@@ -127,6 +129,7 @@ function getComments() {
   </div>
   ${getReplies(comment.id)}
     `;
+    }
   });
 
   return comments;
@@ -190,3 +193,53 @@ function render() {
 }
 
 render();
+
+function getCurrentUserReply() {
+  let comments = "";
+  dataDB.comments.forEach((comment) => {
+    if (comment.user.username === "juliusomo") {
+      comments += `
+    <div class="user-tweet" id="userTweet">
+    <div class="tweet-interaction-mobile">
+      <div class="increment-button">
+        <i class="fa-solid fa-plus" data-plus-btn="${comment.id}"></i>
+        <p class="bold-primary-text">${comment.score}</p>
+        <i class="fa-solid fa-minus icon-size" data-minus-btn ="${
+          comment.id
+        }"></i>
+      </div>
+      <div class="fill-button-mobile">
+        <button class="bold-primary-text button-primary">
+          <i class="fa-solid fa-reply icon-size"></i>
+          <span id="replyButtonMobile">Reply</span>
+        </button>
+      </div>
+    </div>
+    <div class="user-comment">
+      <div class="username-bar">
+        <img
+          src="${comment.user.image.png}"
+          alt="user profile image"
+          class="avatar"
+        />
+        <p class="username">${comment.user.username}</p>
+        <p class="tweet-time">${comment.createdAt}</p>
+        <div class="fill-button">
+          <button  class="bold-primary-text button-primary">
+            <i class="fa-solid fa-reply icon-size"></i>
+            <span id="replyButton">Reply</span>
+          </button>
+        </div>
+      </div>
+      <p class="user-text-comment">
+       ${comment.content}
+      </p>
+    </div>
+  </div>
+  ${getReplies(comment.id)}
+    `;
+    }
+  });
+
+  return comments;
+}

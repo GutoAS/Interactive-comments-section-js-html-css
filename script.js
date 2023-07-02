@@ -3,6 +3,10 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 const deletePrompt = document.getElementById("deletePrompt");
 
+const commentId = {
+  id: "",
+};
+
 document.addEventListener("click", function (e) {
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
     handleCurrentUserSendBtn();
@@ -24,8 +28,13 @@ document.addEventListener("click", function (e) {
   }
   if (e.target.dataset.deleteCommentBtn) {
     deletePrompt.style.display = "block";
+    commentId.id = e.target.dataset.deleteCommentBtn;
   }
   if (e.target.id === "cancelBtn") {
+    deletePrompt.style.display = "none";
+  }
+  if (e.target.id === "deleteBtn") {
+    handleDeleteComment(commentId.id);
     deletePrompt.style.display = "none";
   }
 });
@@ -90,6 +99,13 @@ function handleReplyButtonClick() {
   for (let i = 0; i < replies.length; i++) {
     replies[i].classList.toggle("display-none");
   }
+}
+
+function handleDeleteComment(id) {
+  const comment = dataDB.comments.find((comment) => comment.id === id);
+  const index = dataDB.comments.indexOf(comment);
+  dataDB.comments.splice(index, 1);
+  render();
 }
 
 function getComments() {

@@ -155,7 +155,7 @@ button {
   display: none;
 }
 
-.display-update-btn-flex {
+div .display-update-btn-flex {
   display: flex;
 }
 

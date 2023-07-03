@@ -169,8 +169,11 @@ function handleUpdateComment(id) {
 function handleEditBtnClick(id) {
   const tweetContent = document.getElementById("tweetContent" + id);
   const fillEditBtn = document.getElementById("fillEditBtn" + id);
+  const EditMobileBtn = document.getElementById("EditMobileBtn" + id);
   tweetContent.contentEditable = true;
   fillEditBtn.classList.toggle("display-update-btn-flex");
+  EditMobileBtn.classList.toggle("display-update-btn-flex");
+  console.log(fillEditBtn);
 }
 
 function getComments() {
@@ -252,9 +255,9 @@ function getCurrentUserComment() {
         </button>
         <button
         data-update-comment-btn="${comment.id}"
-        class="button-common display-update-btn-none" id="fillEditBtn${
+        class="button-common display-update-btn-none" id="EditMobileBtn${
           comment.id
-        }" >
+        }">
         Update
        </button>
       </div>

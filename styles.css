@@ -151,6 +151,14 @@ button {
   flex: 1;
 }
 
+.display-update-btn-none {
+  display: none;
+}
+
+.display-update-btn-flex {
+  display: flex;
+}
+
 @media only screen and (max-width: 600px) {
   .fill-button {
     display: none;

@@ -44,6 +44,12 @@ document.addEventListener("click", function (e) {
   if (e.target.dataset.sendReplyBtn) {
     handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
   }
+  if (e.target.dataset.updateCommentBtn) {
+    handleUpdateComment(e.target.dataset.updateCommentBtn);
+  }
+  if (e.target.dataset.editCommentBtn) {
+    handleEditBtnClick(e.target.dataset.editCommentBtn);
+  }
 });
 
 function handleCurrentUserSendBtn() {
@@ -153,6 +159,20 @@ function handleSendReplyButtonClick(id) {
   render();
 }
 
+function handleUpdateComment(id) {
+  const tweetContent = document.getElementById("tweetContent" + id);
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+  comment.content = tweetContent.innerText;
+  render();
+}
+
+function handleEditBtnClick(id) {
+  const tweetContent = document.getElementById("tweetContent" + id);
+  const fillEditBtn = document.getElementById("fillEditBtn" + id);
+  tweetContent.contentEditable = true;
+  fillEditBtn.classList.toggle("display-update-btn-flex");
+}
+
 function getComments() {
   let comments = "";
   dataDB.comments.forEach((comment) => {
@@ -251,16 +271,18 @@ function getCurrentUserComment() {
           </button>
           <button class="bold-primary-text button-primary">
             <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-            <span>Edit</span>
+            <span data-edit-comment-btn="${comment.id}">Edit</span>
           </button>
         </div>
       </div>
-      <p class="user-text-comment" >
+      <p class="user-text-comment" id="tweetContent${comment.id}">
        ${comment.content}
       </p>
-      <div class="fill-button">
+      <div class="fill-button display-update-btn-none" id="fillEditBtn${
+        comment.id
+      }">
               <button
-                data-send-desktop-btn="sendButton"
+                data-update-comment-btn="${comment.id}"
                 class="button-common common-button-display"
               >
                 Update

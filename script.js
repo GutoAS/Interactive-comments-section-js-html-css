@@ -41,6 +41,9 @@ document.addEventListener("click", function (e) {
     handleDeleteComment(commentId.id);
     deletePrompt.style.display = "none";
   }
+  if (e.target.dataset.sendReplyBtn) {
+    handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
+  }
 });
 
 function handleCurrentUserSendBtn() {
@@ -99,9 +102,9 @@ function decrementCommentScore(id) {
 }
 
 function handleReplyButtonClick() {
-  const replies = document.getElementsByClassName("replies");
+  const replies = document.getElementsByClassName("currentUserSendReply");
   for (let i = 0; i < replies.length; i++) {
-    replies[i].classList.toggle("display-none");
+    replies[i].classList.toggle("display-flex");
   }
 }
 
@@ -128,6 +131,25 @@ function handleDeleteComment(id) {
     dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
   }
 
+  render();
+}
+
+function handleSendReplyButtonClick(id) {
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+  const textareaReply = document.getElementById("textareaReply" + id);
+  if (textareaReply.value) {
+    comment.replies.push({
+      id: uuidv4(),
+      content: textareaReply.value,
+      createdAt: "Today",
+      score: 0,
+      user: {
+        ...dataDB.currentUser,
+      },
+      replies: [],
+    });
+  }
+  textareaReply.value = "";
   render();
 }
 
@@ -176,7 +198,7 @@ function getComments() {
   ${
     getReplies(comment.id) +
     getCurrentUserReplies(comment.id) +
-    getReplyAnswer()
+    getReplyAnswer(comment.id)
   }
     `;
     }
@@ -368,9 +390,9 @@ function getCurrentUserReplies(id) {
   return replyHtml;
 }
 
-function getReplyAnswer() {
+function getReplyAnswer(id) {
   let replyAnswer = `
-  <div class="replies">
+  <div class="replies currentUserSendReply">
     <div class="vertical-stroke"></div>
     <div class="tweet-replies">
       <div class="current-user-comment">
@@ -383,15 +405,15 @@ function getReplyAnswer() {
           <div class="fill-button-mobile">
             <button
               class="button-common"
-              data-rely-mobile-btn="relyButton"
+              data-send-reply-btn="${id}"
             >
-              Rely
+              Reply
             </button>
           </div>
         </div>
-        <textarea name="" placeholder="Add a comment..."></textarea>
+        <textarea name="" placeholder="Add a comment..." id="textareaReply${id}"></textarea>
         <button
-          data-reply-desktop-btn="replyButton"
+          data-send-reply-btn="${id}"
           class="button-common common-button-display"
         >
           Reply

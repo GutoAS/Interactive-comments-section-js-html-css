@@ -342,8 +342,12 @@ textarea {
   font-weight: 500;
 }
 
-.display-none {
+.currentUserSendReply {
   display: none;
+}
+
+.display-flex {
+  display: flex;
 }
 
 /*! prompt */

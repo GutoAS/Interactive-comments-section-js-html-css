@@ -78,6 +78,11 @@ p {
   align-self: start;
   padding: 5px 10px;
   font-size: 1rem;
+  cursor: pointer;
+}
+
+.increment-button:hover {
+  color: var(--on-primary);
 }
 
 @media only screen and (max-width: 600px) {

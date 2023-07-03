@@ -294,7 +294,9 @@ function getCurrentUserComment() {
           </button>
         </div>
       </div>
-      <p class="user-text-comment" id="tweetContent${comment.id}">
+      <p class="user-text-comment editable-paragraph editable-paragraph-comment" id="tweetContent${
+        comment.id
+      }">
        ${comment.content}
       </p>
       <div class="fill-button display-update-btn-none" id="fillEditBtn${
@@ -430,7 +432,7 @@ function getCurrentUserReplies(id) {
                 </button>
               </div>
             </div>
-            <p class="user-text-comment" id="tweetContent${reply.id}">
+            <p class="user-text-comment editable-paragraph editable-paragraph-reply" id="tweetContent${reply.id}">
               ${reply.content}
             </p>
             <div class="fill-button display-update-btn-none" id="fillEditBtn${reply.id}">

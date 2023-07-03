@@ -358,6 +358,27 @@ textarea {
   display: flex;
 }
 
+.editable-paragraph[contenteditable="true"] {
+  outline: 1px solid var(--neutral);
+  padding: 16px 10px 10px 24px;
+  border-radius: 5px;
+  overflow: scroll;
+  box-sizing: border-box;
+}
+
+.editable-paragraph-comment {
+  max-width: 700px;
+}
+.editable-paragraph-reply {
+  max-width: 598px;
+}
+
+@media only screen and (max-width: 600px) {
+  .editable-paragraph-reply {
+    max-width: 318px;
+  }
+}
+
 /*! prompt */
 .delete-prompt {
   padding: 24px 30px;

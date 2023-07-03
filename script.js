@@ -248,8 +248,15 @@ function getCurrentUserComment() {
         </button>
         <button class="bold-primary-text button-primary">
           <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-          <span>Edit</span>
+          <span data-edit-comment-btn="${comment.id}">Edit</span>
         </button>
+        <button
+        data-update-comment-btn="${comment.id}"
+        class="button-common display-update-btn-none" id="fillEditBtn${
+          comment.id
+        }" >
+        Update
+       </button>
       </div>
     </div>
     <div class="user-comment">

@@ -173,7 +173,11 @@ function getComments() {
       </p>
     </div>
   </div>
-  ${getReplies(comment.id) + getCurrentUserReplies(comment.id)}
+  ${
+    getReplies(comment.id) +
+    getCurrentUserReplies(comment.id) +
+    getReplyAnswer()
+  }
     `;
     }
   });
@@ -250,7 +254,7 @@ function getReplies(id) {
     comment.replies.forEach((reply) => {
       if (reply.user.username != "juliusomo") {
         replyHtml += `
-    <div class="replies" >
+    <div class="replies">
         <div class="vertical-stroke"></div>
         <div class="tweet-replies">
           <div class="user-tweet-reply" id="userTweet">
@@ -294,6 +298,7 @@ function getReplies(id) {
       }
     });
   }
+
   return replyHtml;
 }
 
@@ -305,7 +310,7 @@ function getCurrentUserReplies(id) {
     comment.replies.forEach((reply) => {
       if (reply.user.username === "juliusomo") {
         replyHtml += `
-  <div class="replies" >
+  <div class="replies">
       <div class="vertical-stroke"></div>
       <div class="tweet-replies">
         <div class="user-tweet-reply" id="userTweet">
@@ -363,9 +368,67 @@ function getCurrentUserReplies(id) {
   return replyHtml;
 }
 
+function getReplyAnswer() {
+  let replyAnswer = `
+  <div class="replies">
+    <div class="vertical-stroke"></div>
+    <div class="tweet-replies">
+      <div class="current-user-comment">
+        <div class="current-user-interaction">
+          <img
+            src="images/avatars/image-juliusomo.png"
+            alt="current user profile picture"
+            class="avatar"
+          />
+          <div class="fill-button-mobile">
+            <button
+              class="button-common"
+              data-rely-mobile-btn="relyButton"
+            >
+              Rely
+            </button>
+          </div>
+        </div>
+        <textarea name="" placeholder="Add a comment..."></textarea>
+        <button
+          data-reply-desktop-btn="replyButton"
+          class="button-common common-button-display"
+        >
+          Reply
+        </button>
+        </div>
+    </div>  
+  </div> 
+ 
+  `;
+  return replyAnswer;
+}
+
 function render() {
   document.getElementById("commentsContainerEl").innerHTML =
     getComments() + getCurrentUserComment();
 }
 
 render();
+
+//! just for testing
+// function pushReply() {
+//   dataDB.comments[0].replies.push({
+//     id: 3,
+//     content:
+//       "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+//     createdAt: "1 week ago",
+//     score: 4,
+//     replyingTo: "maxblagun",
+//     user: {
+//       image: {
+//         png: "./images/avatars/image-ramsesmiron.png",
+//         webp: "./images/avatars/image-ramsesmiron.webp",
+//       },
+//       username: "ramsesmiron",
+//     },
+//   });
+//   render();
+// }
+
+// pushReply();

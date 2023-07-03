@@ -162,7 +162,17 @@ function handleSendReplyButtonClick(id) {
 function handleUpdateComment(id) {
   const tweetContent = document.getElementById("tweetContent" + id);
   const comment = dataDB.comments.find((comment) => comment.id == id);
-  comment.content = tweetContent.innerText;
+  if (comment) {
+    comment.content = tweetContent.innerText;
+  }
+
+  dataDB.comments.forEach((comment) => {
+    let replyObj = comment.replies.find((reply) => reply.id == id);
+    if (replyObj) {
+      replyObj.content = tweetContent.innerText;
+    }
+  });
+
   render();
 }
 
@@ -173,7 +183,6 @@ function handleEditBtnClick(id) {
   tweetContent.contentEditable = true;
   fillEditBtn.classList.toggle("display-update-btn-flex");
   EditMobileBtn.classList.toggle("display-update-btn-flex");
-  console.log(fillEditBtn);
 }
 
 function getComments() {
@@ -297,7 +306,7 @@ function getCurrentUserComment() {
               >
                 Update
               </button>
-            </div>
+        </div>
     </div>
   </div>
   ${getReplies(comment.id) + getCurrentUserReplies(comment.id)}
@@ -389,8 +398,13 @@ function getCurrentUserReplies(id) {
               </button>
               <button class="bold-primary-text button-primary">
                 <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-                <span>Edit</span>
+                <span data-edit-comment-btn="${reply.id}">Edit</span>
               </button>
+              <button
+                data-update-comment-btn="${reply.id}"
+                class="button-common display-update-btn-none" id="EditMobileBtn${reply.id}">
+                Update
+            </button>
             </div>
           </div>
           <div class="user-comment">
@@ -412,21 +426,21 @@ function getCurrentUserReplies(id) {
                 </button>
                 <button class="bold-primary-text button-primary">
                   <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-                  <span>Edit</span>
+                  <span data-edit-comment-btn="${reply.id}">Edit</span>
                 </button>
               </div>
             </div>
-            <p class="user-text-comment">
+            <p class="user-text-comment" id="tweetContent${reply.id}">
               ${reply.content}
             </p>
-            <div class="fill-button">
-              <button
-                data-send-desktop-btn="sendButton"
-                class="button-common common-button-display"
-              >
-                Update
-              </button>
-            </div>
+            <div class="fill-button display-update-btn-none" id="fillEditBtn${reply.id}">
+                    <button
+                      data-update-comment-btn="${reply.id}"
+                      class="button-common common-button-display"
+                    >
+                      Update
+                    </button>
+              </div>
           </div>
         </div>
       </div>

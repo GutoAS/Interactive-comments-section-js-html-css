@@ -58,7 +58,7 @@ function handleCurrentUserSendBtn() {
     dataDB.comments.push({
       id: uuidv4(),
       content: currentUserComment.value,
-      createdAt: "Today",
+      createdAt: new Date().valueOf(),
       score: 0,
       user: {
         ...dataDB.currentUser,
@@ -147,7 +147,7 @@ function handleSendReplyButtonClick(id) {
     comment.replies.push({
       id: uuidv4(),
       content: textareaReply.value,
-      createdAt: "Today",
+      createdAt: new Date().valueOf(),
       score: 0,
       user: {
         ...dataDB.currentUser,
@@ -214,7 +214,7 @@ function getComments() {
           class="avatar"
         />
         <p class="username">${comment.user.username}</p>
-        <p class="tweet-time">${comment.createdAt}</p>
+        <p class="tweet-time">${getTimeElapsed(comment.createdAt)}</p>
         <div class="fill-button">
           <button  class="bold-primary-text button-primary">
             <i class="fa-solid fa-reply icon-size"></i>
@@ -273,7 +273,7 @@ function getComments() {
         <p>you</p>
         </div>
         <p class="username">${comment.user.username}</p>
-        <p class="tweet-time">${comment.createdAt}</p>
+        <p class="tweet-time">${getTimeElapsed(comment.createdAt)}</p>
         <div class="fill-button">
           <button class="bold-primary-text button-tertiary">
           <i class="fa-solid fa-trash-can icon-size"></i>
@@ -323,9 +323,13 @@ function getReplies(id) {
           <div class="user-tweet-reply" id="userTweet">
             <div class="tweet-interaction-mobile">
               <div class="increment-button">
-                <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
+                <i class="fa-solid fa-plus" data-plus-btn-reply="${
+                  reply.id
+                }"></i>
                 <p class="bold-primary-text">${reply.score}</p>
-                <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
+                <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
+                  reply.id
+                }"></i>
               </div>
               <div class="fill-button-mobile">
                 <button class="bold-primary-text button-primary">
@@ -342,7 +346,7 @@ function getReplies(id) {
                   class="avatar"
                 />
                 <p class="username">${reply.user.username}</p>
-                <p class="tweet-time">${reply.createdAt}</p>
+                <p class="tweet-time">${getTimeElapsed(reply.createdAt)}</p>
                 <div class="fill-button">
                   <button class="bold-primary-text button-primary">
                     <i class="fa-solid fa-reply icon-size"></i>
@@ -381,7 +385,9 @@ function getCurrentUserReplies(id) {
             <div class="increment-button">
               <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
               <p class="bold-primary-text">${reply.score}</p>
-              <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${reply.id}"></i>
+              <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
+                reply.id
+              }"></i>
             </div>
             <div class="fill-button-mobile">
               <button class="bold-primary-text button-tertiary">
@@ -394,7 +400,9 @@ function getCurrentUserReplies(id) {
               </button>
               <button
                 data-update-comment-btn="${reply.id}"
-                class="button-common display-update-btn-none" id="EditMobileBtn${reply.id}">
+                class="button-common display-update-btn-none" id="EditMobileBtn${
+                  reply.id
+                }">
                 Update
             </button>
             </div>
@@ -410,7 +418,7 @@ function getCurrentUserReplies(id) {
                 <p>you</p>
               </div>
               <p class="username">${reply.user.username}</p>
-              <p class="tweet-time">${reply.createdAt}</p>
+              <p class="tweet-time">${getTimeElapsed(reply.createdAt)}</p>
               <div class="fill-button">
                 <button class="bold-primary-text button-tertiary">
                 <i class="fa-solid fa-trash-can icon-size"></i>
@@ -422,10 +430,14 @@ function getCurrentUserReplies(id) {
                 </button>
               </div>
             </div>
-            <p class="user-text-comment editable-paragraph editable-paragraph-reply" id="tweetContent${reply.id}">
+            <p class="user-text-comment editable-paragraph editable-paragraph-reply" id="tweetContent${
+              reply.id
+            }">
               ${reply.content}
             </p>
-            <div class="fill-button display-update-btn-none" id="fillEditBtn${reply.id}">
+            <div class="fill-button display-update-btn-none" id="fillEditBtn${
+              reply.id
+            }">
                     <button
                       data-update-comment-btn="${reply.id}"
                       class="button-common common-button-display"
@@ -484,6 +496,47 @@ function sortData() {
   dataDB.comments.sort((a, b) => {
     return b.score - a.score;
   });
+}
+
+function getTimeElapsed(date) {
+  const now = new Date().valueOf();
+  const timeElapsed = now - date;
+
+  const second = Math.floor(timeElapsed / 1000);
+  const minute = Math.floor(timeElapsed / (1000 * 60));
+  const hour = Math.floor(timeElapsed / (1000 * 60 * 60));
+  const day = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+  const week = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 7));
+  const month = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 30));
+
+  if (second < 60) {
+    return second + " seconds ago";
+  }
+  if (minute < 60) {
+    return minute + " minutes ago";
+  }
+  if (hour < 24) {
+    if (hour <= 1) {
+      return hour + " hour ago";
+    }
+    return hour + " hours ago";
+  }
+  if (day < 7) {
+    if (day <= 1) {
+      return day + " day ago";
+    }
+    return day + " days ago";
+  }
+  if (week < 4) {
+    if (week <= 1) {
+      return week + " week ago";
+    }
+    return week + " weeks ago ";
+  }
+  if (month <= 1) {
+    return month + " month ago";
+  }
+  return month + "months ago";
 }
 
 function render() {

@@ -233,16 +233,7 @@ function getComments() {
     getReplyAnswer(comment.id)
   }
     `;
-    }
-  });
-
-  return comments;
-}
-
-function getCurrentUserComment() {
-  let comments = "";
-  dataDB.comments.forEach((comment) => {
-    if (comment.user.username === "juliusomo") {
+    } else if (comment.user.username === "juliusomo") {
       comments += `
     <div class="user-tweet" id="userTweet">
     <div class="tweet-interaction-mobile">
@@ -315,7 +306,6 @@ function getCurrentUserComment() {
     `;
     }
   });
-
   return comments;
 }
 
@@ -492,15 +482,13 @@ function getReplyAnswer(id) {
 
 function sortData() {
   dataDB.comments.sort((a, b) => {
-    return a.score - b.score;
+    return b.score - a.score;
   });
 }
 
 function render() {
   sortData();
-  document.getElementById("commentsContainerEl").innerHTML =
-    getComments() + getCurrentUserComment();
-  console.log(dataDB.comments);
+  document.getElementById("commentsContainerEl").innerHTML = getComments();
 }
 
 render();

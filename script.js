@@ -227,11 +227,7 @@ function getComments() {
       </p>
     </div>
   </div>
-  ${
-    getReplies(comment.id) +
-    getCurrentUserReplies(comment.id) +
-    getReplyAnswer(comment.id)
-  }
+  ${getReplies(comment.id) + getReplyAnswer(comment.id)}
     `;
     } else if (comment.user.username === "juliusomo") {
       comments += `
@@ -302,7 +298,7 @@ function getComments() {
         </div>
     </div>
   </div>
-  ${getReplies(comment.id) + getCurrentUserReplies(comment.id)}
+  ${getReplies(comment.id)}
     `;
     }
   });
@@ -362,97 +358,87 @@ function getReplies(id) {
         </div>
     </div> 
       `;
-      }
-    });
-  }
-
-  return replyHtml;
-}
-
-function getCurrentUserReplies(id) {
-  let replyHtml = "";
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-
-  if (comment.replies.length > 0) {
-    comment.replies.forEach((reply) => {
-      if (reply.user.username === "juliusomo") {
+      } else if (reply.user.username === "juliusomo") {
         replyHtml += `
-  <div class="replies">
-      <div class="vertical-stroke"></div>
-      <div class="tweet-replies">
-        <div class="user-tweet-reply" id="userTweet">
-          <div class="tweet-interaction-mobile">
-            <div class="increment-button">
-              <i class="fa-solid fa-plus" data-plus-btn-reply="${reply.id}"></i>
-              <p class="bold-primary-text">${reply.score}</p>
-              <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
-                reply.id
-              }"></i>
-            </div>
-            <div class="fill-button-mobile">
-              <button class="bold-primary-text button-tertiary">
-              <i class="fa-solid fa-trash-can icon-size"></i>
-              <span data-delete-reply-btn="${reply.id}">Delete</span>
-              </button>
-              <button class="bold-primary-text button-primary">
-                <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-                <span data-edit-comment-btn="${reply.id}">Edit</span>
-              </button>
-              <button
-                data-update-comment-btn="${reply.id}"
-                class="button-common display-update-btn-none" id="EditMobileBtn${
-                  reply.id
-                }">
-                Update
-            </button>
-            </div>
-          </div>
-          <div class="user-comment">
-            <div class="username-bar">
-              <img
-                src="${reply.user.image.png}"
-                alt="user profile image"
-                class="avatar"
-              />
-              <div class="current-user-badge">
-                <p>you</p>
-              </div>
-              <p class="username">${reply.user.username}</p>
-              <p class="tweet-time">${getTimeElapsed(reply.createdAt)}</p>
-              <div class="fill-button">
-                <button class="bold-primary-text button-tertiary">
-                <i class="fa-solid fa-trash-can icon-size"></i>
-                <span data-delete-reply-btn="${reply.id}">Delete</span>
-                </button>
-                <button class="bold-primary-text button-primary">
-                  <i class="fa-sharp fa-solid fa-pen icon-size"></i>
-                  <span data-edit-comment-btn="${reply.id}">Edit</span>
-                </button>
-              </div>
-            </div>
-            <p class="user-text-comment editable-paragraph editable-paragraph-reply" id="tweetContent${
-              reply.id
-            }">
-              ${reply.content}
-            </p>
-            <div class="fill-button display-update-btn-none" id="fillEditBtn${
-              reply.id
-            }">
+        <div class="replies">
+            <div class="vertical-stroke"></div>
+            <div class="tweet-replies">
+              <div class="user-tweet-reply" id="userTweet">
+                <div class="tweet-interaction-mobile">
+                  <div class="increment-button">
+                    <i class="fa-solid fa-plus" data-plus-btn-reply="${
+                      reply.id
+                    }"></i>
+                    <p class="bold-primary-text">${reply.score}</p>
+                    <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
+                      reply.id
+                    }"></i>
+                  </div>
+                  <div class="fill-button-mobile">
+                    <button class="bold-primary-text button-tertiary">
+                    <i class="fa-solid fa-trash-can icon-size"></i>
+                    <span data-delete-reply-btn="${reply.id}">Delete</span>
+                    </button>
+                    <button class="bold-primary-text button-primary">
+                      <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+                      <span data-edit-comment-btn="${reply.id}">Edit</span>
+                    </button>
                     <button
                       data-update-comment-btn="${reply.id}"
-                      class="button-common common-button-display"
-                    >
+                      class="button-common display-update-btn-none" id="EditMobileBtn${
+                        reply.id
+                      }">
                       Update
-                    </button>
+                  </button>
+                  </div>
+                </div>
+                <div class="user-comment">
+                  <div class="username-bar">
+                    <img
+                      src="${reply.user.image.png}"
+                      alt="user profile image"
+                      class="avatar"
+                    />
+                    <div class="current-user-badge">
+                      <p>you</p>
+                    </div>
+                    <p class="username">${reply.user.username}</p>
+                    <p class="tweet-time">${getTimeElapsed(reply.createdAt)}</p>
+                    <div class="fill-button">
+                      <button class="bold-primary-text button-tertiary">
+                      <i class="fa-solid fa-trash-can icon-size"></i>
+                      <span data-delete-reply-btn="${reply.id}">Delete</span>
+                      </button>
+                      <button class="bold-primary-text button-primary">
+                        <i class="fa-sharp fa-solid fa-pen icon-size"></i>
+                        <span data-edit-comment-btn="${reply.id}">Edit</span>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="user-text-comment editable-paragraph editable-paragraph-reply" id="tweetContent${
+                    reply.id
+                  }">
+                    ${reply.content}
+                  </p>
+                  <div class="fill-button display-update-btn-none" id="fillEditBtn${
+                    reply.id
+                  }">
+                          <button
+                            data-update-comment-btn="${reply.id}"
+                            class="button-common common-button-display"
+                          >
+                            Update
+                          </button>
+                    </div>
+                </div>
               </div>
-          </div>
-        </div>
-      </div>
-  </div> 
-    `;
+            </div>
+        </div> 
+          `;
       }
     });
   }
+
   return replyHtml;
 }
 

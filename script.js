@@ -482,6 +482,11 @@ function sortData() {
   dataDB.comments.sort((a, b) => {
     return b.score - a.score;
   });
+  dataDB.comments.forEach((comment) => {
+    comment.replies.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+  });
 }
 
 function getTimeElapsed(date) {
@@ -499,6 +504,9 @@ function getTimeElapsed(date) {
     return second + " seconds ago";
   }
   if (minute < 60) {
+    if (minute <= 1) {
+      return minute + "minute ago";
+    }
     return minute + " minutes ago";
   }
   if (hour < 24) {

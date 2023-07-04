@@ -490,9 +490,17 @@ function getReplyAnswer(id) {
   return replyAnswer;
 }
 
+function sortData() {
+  dataDB.comments.sort((a, b) => {
+    return a.score - b.score;
+  });
+}
+
 function render() {
+  sortData();
   document.getElementById("commentsContainerEl").innerHTML =
     getComments() + getCurrentUserComment();
+  console.log(dataDB.comments);
 }
 
 render();

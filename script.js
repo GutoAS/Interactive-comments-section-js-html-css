@@ -1,9 +1,34 @@
-import { dataDB } from "./data.js";
+// import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const commentId = {
-  id: "",
+const firebaseConfig = {
+  apiKey: "AIzaSyBCJajmgghMgIl8KQUJtDD4SZkPqMY2IDE",
+  authDomain: "interactive-comments-sec-edba5.firebaseapp.com",
+  projectId: "interactive-comments-sec-edba5",
+  storageBucket: "interactive-comments-sec-edba5.appspot.com",
+  messagingSenderId: "553758730490",
+  appId: "1:553758730490:web:bce9b546d6d1b793354143",
 };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const colRef = collection(db, "userData");
+const userData = await getDocs(colRef);
+
+let dataDB = {};
+userData.forEach((users) => {
+  dataDB = { ...users.data() };
+});
+console.log(dataDB);
+
+//this const store id when delete button is clicked
+const commentId = {};
 
 document.addEventListener("click", function (e) {
   const deletePrompt = document.getElementById("deletePrompt");

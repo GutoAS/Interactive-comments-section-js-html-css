@@ -472,7 +472,7 @@ function sortData() {
   });
   dataDB.comments.forEach((comment) => {
     comment.replies.sort((a, b) => {
-      return b.createdAt - a.createdAt;
+      return a.createdAt - b.createdAt;
     });
   });
 }

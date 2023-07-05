@@ -9,6 +9,7 @@ import {
   doc,
   arrayUnion,
   arrayRemove,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -24,12 +25,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const colRef = collection(db, "userData");
 const userDataRef = doc(db, "userData", "Hk4VJnAuyt2wDk3DEdhY");
-const userData = await getDocs(colRef);
+const currentUserData = await getDocs(colRef);
 
-let dataDB = {};
-userData.forEach((users) => {
-  dataDB = { ...users.data() };
+let currentUser = {};
+currentUserData.forEach((users) => {
+  currentUser = { ...users.data().currentUser };
 });
+onSnapshot(colRef, (querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    render(doc.data());
+  });
+});
+
+function getExactComment(id, data) {
+  const comment = data.comments.find((comment) => comment.id == id);
+  return comment;
+}
 
 //! this const store id when delete button is clicked
 const commentId = {};
@@ -76,7 +87,6 @@ document.addEventListener("click", function (e) {
     handleEditBtnClick(e.target.dataset.editCommentBtn);
   }
 });
-
 async function handleCurrentUserSendBtn() {
   const currentUserComment = document.getElementById("currentUserComment");
   if (currentUserComment.value) {
@@ -86,15 +96,14 @@ async function handleCurrentUserSendBtn() {
       createdAt: new Date().valueOf(),
       score: 0,
       user: {
-        ...dataDB.currentUser,
+        ...currentUser,
       },
       replies: [],
     };
     await updateDoc(userDataRef, {
       comments: arrayUnion(pushCommentDB),
     });
-    console.log(pushCommentDB);
-    render();
+    // render();
   }
   currentUserComment.value = "";
 }
@@ -108,11 +117,11 @@ function incrementScore(id) {
     comment.replies.forEach((reply) => {
       if (reply.id == id) {
         reply.score++;
-        render();
+        // render();
       }
     });
   });
-  render();
+  // render();
 }
 
 function decrementScore(id) {
@@ -126,11 +135,11 @@ function decrementScore(id) {
     comment.replies.forEach((reply) => {
       if (reply.id == id && reply.score > 0) {
         reply.score--;
-        render();
+        // render();
       }
     });
   });
-  render();
+  // render();
 }
 
 function handleReplyButtonClick() {
@@ -156,35 +165,31 @@ function handleSendReplyButtonClick(id) {
     });
   }
   textareaReply.value = "";
-  render();
+  // render();
 }
 
 async function handleDeleteComment(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  let replyObj = "";
-  dataDB.comments.forEach((comment) => {
-    comment.replies.forEach((reply) => {
-      if (reply.id == id) {
-        replyObj = reply;
-      }
+  onSnapshot(colRef, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const comment = getExactComment(id, doc.data());
+      render(doc.data());
+      updateDoc(userDataRef, {
+        comments: arrayRemove(comment),
+      });
     });
   });
-  if (comment) {
-    // const index = dataDB.comments.indexOf(comment);
-    // dataDB.comments.splice(index, 1);
-    await updateDoc(userDataRef, {
-      comments: arrayRemove(comment),
-    });
-  }
-  if (replyObj) {
-    let index = "";
-    dataDB.comments.forEach(
-      (comment) => (index = comment.replies.indexOf(replyObj))
-    );
-    dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
-  }
 
-  render();
+  // const index = dataDB.comments.indexOf(comment);
+  // dataDB.comments.splice(index, 1);
+
+  // if (replyObj) {
+  //   let index = "";
+  //   dataDB.comments.forEach(
+  //     (comment) => (index = comment.replies.indexOf(replyObj))
+  //   );
+  //   dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
+  // }
+  // render();
 }
 
 function handleUpdateComment(id) {
@@ -201,7 +206,7 @@ function handleUpdateComment(id) {
     }
   });
 
-  render();
+  // render();
 }
 
 function handleEditBtnClick(id) {
@@ -213,7 +218,7 @@ function handleEditBtnClick(id) {
   EditMobileBtn.classList.toggle("display-update-btn-flex");
 }
 
-function getComments() {
+function getComments(dataDB) {
   let comments = "";
   dataDB.comments.forEach((comment) => {
     if (comment.user.username != "juliusomo") {
@@ -255,7 +260,7 @@ function getComments() {
       </p>
     </div>
   </div>
-  ${getReplies(comment.id) + getReplyAnswer(comment.id)}
+  ${getReplies(comment.id, dataDB) + getReplyAnswer(comment.id)}
     `;
     } else if (comment.user.username === "juliusomo") {
       comments += `
@@ -326,14 +331,14 @@ function getComments() {
         </div>
     </div>
   </div>
-  ${getReplies(comment.id)}
+  ${getReplies(comment.id, dataDB)}
     `;
     }
   });
   return comments;
 }
 
-function getReplies(id) {
+function getReplies(id, dataDB) {
   let replyHtml = "";
   const comment = dataDB.comments.find((comment) => comment.id == id);
 
@@ -502,7 +507,7 @@ function getReplyAnswer(id) {
   return replyAnswer;
 }
 
-function sortData() {
+function sortData(dataDB) {
   dataDB.comments.sort((a, b) => {
     return b.score - a.score;
   });
@@ -549,9 +554,9 @@ function getTimeElapsed(date) {
   return month + "months ago";
 }
 
-function render() {
-  sortData();
-  document.getElementById("commentsContainerEl").innerHTML = getComments();
+function render(data) {
+  sortData(data);
+  document.getElementById("commentsContainerEl").innerHTML = getComments(data);
 }
 
-render();
+// render();

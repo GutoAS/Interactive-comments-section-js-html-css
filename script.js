@@ -5,6 +5,10 @@ import {
   getFirestore,
   collection,
   getDocs,
+  updateDoc,
+  doc,
+  arrayUnion,
+  arrayRemove,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -19,15 +23,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const colRef = collection(db, "userData");
+const userDataRef = doc(db, "userData", "Hk4VJnAuyt2wDk3DEdhY");
 const userData = await getDocs(colRef);
 
 let dataDB = {};
 userData.forEach((users) => {
   dataDB = { ...users.data() };
 });
-console.log(dataDB);
 
-//this const store id when delete button is clicked
+//! this const store id when delete button is clicked
 const commentId = {};
 
 document.addEventListener("click", function (e) {
@@ -73,10 +77,10 @@ document.addEventListener("click", function (e) {
   }
 });
 
-function handleCurrentUserSendBtn() {
+async function handleCurrentUserSendBtn() {
   const currentUserComment = document.getElementById("currentUserComment");
   if (currentUserComment.value) {
-    dataDB.comments.push({
+    const pushCommentDB = {
       id: uuidv4(),
       content: currentUserComment.value,
       createdAt: new Date().valueOf(),
@@ -85,7 +89,11 @@ function handleCurrentUserSendBtn() {
         ...dataDB.currentUser,
       },
       replies: [],
+    };
+    await updateDoc(userDataRef, {
+      comments: arrayUnion(pushCommentDB),
     });
+    console.log(pushCommentDB);
     render();
   }
   currentUserComment.value = "";

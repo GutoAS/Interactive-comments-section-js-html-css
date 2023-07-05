@@ -1,5 +1,6 @@
 import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+
 const commentId = {
   id: "",
 };
@@ -11,19 +12,16 @@ document.addEventListener("click", function (e) {
     handleCurrentUserSendBtn();
   }
   if (e.target.dataset.plusBtn) {
-    incrementCommentScore(e.target.dataset.plusBtn);
-  }
-  if (e.target.dataset.plusBtnReply) {
-    incrementReplyScore(e.target.dataset.plusBtnReply);
-  }
-  if (e.target.dataset.minusBtnReply) {
-    decrementReplyScore(e.target.dataset.minusBtnReply);
+    incrementScore(e.target.dataset.plusBtn);
   }
   if (e.target.dataset.minusBtn) {
-    decrementCommentScore(e.target.dataset.minusBtn);
+    decrementScore(e.target.dataset.minusBtn);
   }
   if (e.target.id === "replyButton" || e.target.id === "replyButtonMobile") {
     handleReplyButtonClick();
+  }
+  if (e.target.dataset.sendReplyBtn) {
+    handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
   }
   if (e.target.dataset.deleteCommentBtn) {
     deletePrompt.style.display = "block";
@@ -41,9 +39,7 @@ document.addEventListener("click", function (e) {
     handleDeleteComment(commentId.id);
     deletePrompt.style.display = "none";
   }
-  if (e.target.dataset.sendReplyBtn) {
-    handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
-  }
+
   if (e.target.dataset.updateCommentBtn) {
     handleUpdateComment(e.target.dataset.updateCommentBtn);
   }
@@ -67,17 +63,14 @@ function handleCurrentUserSendBtn() {
     });
     render();
   }
-
   currentUserComment.value = "";
 }
 
-function incrementCommentScore(id) {
+function incrementScore(id) {
   const comment = dataDB.comments.find((comment) => comment.id == id);
-  comment.score++;
-  render();
-}
-
-function incrementReplyScore(id) {
+  if (comment) {
+    comment.score++;
+  }
   dataDB.comments.forEach((comment) => {
     comment.replies.forEach((reply) => {
       if (reply.id == id) {
@@ -86,9 +79,16 @@ function incrementReplyScore(id) {
       }
     });
   });
+  render();
 }
 
-function decrementReplyScore(id) {
+function decrementScore(id) {
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+  if (comment) {
+    if (comment.score > 0) {
+      comment.score--;
+    }
+  }
   dataDB.comments.forEach((comment) => {
     comment.replies.forEach((reply) => {
       if (reply.id == id && reply.score > 0) {
@@ -97,13 +97,6 @@ function decrementReplyScore(id) {
       }
     });
   });
-}
-
-function decrementCommentScore(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  if (comment.score > 0) {
-    comment.score--;
-  }
   render();
 }
 
@@ -112,32 +105,6 @@ function handleReplyButtonClick() {
   for (let i = 0; i < replies.length; i++) {
     replies[i].classList.toggle("display-flex");
   }
-}
-
-function handleDeleteComment(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  let replyObj = "";
-  dataDB.comments.forEach((comment) => {
-    comment.replies.forEach((reply) => {
-      if (reply.id == id) {
-        replyObj = reply;
-      }
-    });
-  });
-  if (comment) {
-    const index = dataDB.comments.indexOf(comment);
-    dataDB.comments.splice(index, 1);
-  }
-  if (replyObj) {
-    console.log(replyObj);
-    let index = "";
-    dataDB.comments.forEach(
-      (comment) => (index = comment.replies.indexOf(replyObj))
-    );
-    dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
-  }
-
-  render();
 }
 
 function handleSendReplyButtonClick(id) {
@@ -156,6 +123,31 @@ function handleSendReplyButtonClick(id) {
     });
   }
   textareaReply.value = "";
+  render();
+}
+
+function handleDeleteComment(id) {
+  const comment = dataDB.comments.find((comment) => comment.id == id);
+  let replyObj = "";
+  dataDB.comments.forEach((comment) => {
+    comment.replies.forEach((reply) => {
+      if (reply.id == id) {
+        replyObj = reply;
+      }
+    });
+  });
+  if (comment) {
+    const index = dataDB.comments.indexOf(comment);
+    dataDB.comments.splice(index, 1);
+  }
+  if (replyObj) {
+    let index = "";
+    dataDB.comments.forEach(
+      (comment) => (index = comment.replies.indexOf(replyObj))
+    );
+    dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
+  }
+
   render();
 }
 
@@ -319,11 +311,9 @@ function getReplies(id) {
           <div class="user-tweet-reply" id="userTweet">
             <div class="tweet-interaction-mobile">
               <div class="increment-button">
-                <i class="fa-solid fa-plus" data-plus-btn-reply="${
-                  reply.id
-                }"></i>
+                <i class="fa-solid fa-plus" data-plus-btn="${reply.id}"></i>
                 <p class="bold-primary-text">${reply.score}</p>
-                <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
+                <i class="fa-solid fa-minus icon-size" data-minus-btn="${
                   reply.id
                 }"></i>
               </div>
@@ -366,11 +356,9 @@ function getReplies(id) {
               <div class="user-tweet-reply" id="userTweet">
                 <div class="tweet-interaction-mobile">
                   <div class="increment-button">
-                    <i class="fa-solid fa-plus" data-plus-btn-reply="${
-                      reply.id
-                    }"></i>
+                    <i class="fa-solid fa-plus" data-plus-btn="${reply.id}"></i>
                     <p class="bold-primary-text">${reply.score}</p>
-                    <i class="fa-solid fa-minus icon-size" data-minus-btn-reply="${
+                    <i class="fa-solid fa-minus icon-size" data-minus-btn="${
                       reply.id
                     }"></i>
                   </div>
@@ -501,35 +489,27 @@ function getTimeElapsed(date) {
   const month = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 30));
 
   if (second < 60) {
+    if (second <= 1) return second + " second ago";
     return second + " seconds ago";
   }
   if (minute < 60) {
-    if (minute <= 1) {
-      return minute + "minute ago";
-    }
+    if (minute <= 1) return minute + "minute ago";
     return minute + " minutes ago";
   }
   if (hour < 24) {
-    if (hour <= 1) {
-      return hour + " hour ago";
-    }
+    if (hour <= 1) return hour + " hour ago";
     return hour + " hours ago";
   }
   if (day < 7) {
-    if (day <= 1) {
-      return day + " day ago";
-    }
+    if (day <= 1) return day + " day ago";
     return day + " days ago";
   }
   if (week < 4) {
-    if (week <= 1) {
-      return week + " week ago";
-    }
+    if (week <= 1) return week + " week ago";
     return week + " weeks ago ";
   }
-  if (month <= 1) {
-    return month + " month ago";
-  }
+  if (month <= 1) return month + " month ago";
+
   return month + "months ago";
 }
 

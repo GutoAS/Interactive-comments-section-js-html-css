@@ -159,7 +159,7 @@ function handleSendReplyButtonClick(id) {
   render();
 }
 
-function handleDeleteComment(id) {
+async function handleDeleteComment(id) {
   const comment = dataDB.comments.find((comment) => comment.id == id);
   let replyObj = "";
   dataDB.comments.forEach((comment) => {
@@ -170,8 +170,11 @@ function handleDeleteComment(id) {
     });
   });
   if (comment) {
-    const index = dataDB.comments.indexOf(comment);
-    dataDB.comments.splice(index, 1);
+    // const index = dataDB.comments.indexOf(comment);
+    // dataDB.comments.splice(index, 1);
+    await updateDoc(userDataRef, {
+      comments: arrayRemove(comment),
+    });
   }
   if (replyObj) {
     let index = "";

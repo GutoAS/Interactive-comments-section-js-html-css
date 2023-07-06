@@ -588,7 +588,7 @@ function getReplyAnswer(id) {
             </button>
           </div>
         </div>
-        <textarea name="" placeholder="Add a comment..." id="textareaReply${id}"></textarea>
+        <textarea name="" placeholder="Add a reply..." id="textareaReply${id}"></textarea>
         <button
           data-send-reply-btn="${id}"
           class="button-common common-button-display"

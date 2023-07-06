@@ -27,6 +27,7 @@ const colRef = collection(db, "userData");
 const userDataRef = doc(db, "userData", "Hk4VJnAuyt2wDk3DEdhY");
 const currentUserData = await getDocs(colRef);
 
+//! this object store current user data
 let currentUser = {};
 currentUserData.forEach((users) => {
   currentUser = { ...users.data().currentUser };
@@ -101,7 +102,6 @@ async function handleSendCommentBtn() {
     await updateDoc(userDataRef, {
       comments: arrayUnion(pushCommentDB),
     });
-    // render();
   }
   currentUserComment.value = "";
 }
@@ -139,7 +139,6 @@ function handleSendReplyButtonClick(id) {
     });
   }
   textareaReply.value = "";
-  // render();
 }
 
 function incrementScore(id) {
@@ -262,13 +261,13 @@ function handleDeleteComment(id) {
           if (reply.id == id) {
             const index = comment.replies.indexOf(reply);
             comment.replies.splice(index, 1);
+            updateDoc(userDataRef, {
+              comments: commentsData,
+            });
           }
         });
       });
 
-      updateDoc(userDataRef, {
-        comments: commentsData,
-      });
       render(doc.data());
     });
   });
@@ -655,66 +654,3 @@ function render(data) {
   sortData(data);
   document.getElementById("commentsContainerEl").innerHTML = getComments(data);
 }
-
-// render();
-// !testing
-const colRefTest = collection(db, "test");
-const frankDocRef = doc(db, "test", "frank");
-// await setDoc(frankDocRef, {
-//   name: "Frank",
-//   favorites: { food: "Pizza", color: "Blue", subject: "recess", score: 7 },
-//   age: 12,
-// });
-
-// await updateDoc(frankDocRef, {
-//   age: 13,
-//   "favorites.color": ["Red", "Green", "Blue"],
-// });
-
-// onSnapshot(colRefTest, (querySnapshot) => {
-//   querySnapshot.forEach((doc) => {
-//     const dataDoc = doc.data().favorites.find((comment) => comment.id == 1);
-//     console.log(dataDoc);
-
-//     updateDoc(frankDocRef, {
-//       favorites: arrayRemove(dataDoc),
-//     });
-
-//     let score = dataDoc.score;
-//     score++;
-
-//     dataDoc.score = score;
-
-//     updateDoc(frankDocRef, { favorites: arrayUnion(dataDoc) });
-
-//   });
-// });
-
-// function incrementTest() {
-//   let isScore = false;
-//   let score = "";
-//   onSnapshot(colRefTest, (querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//       let favoritesData = doc.data().favorites;
-//       let exactFavoriteObj = favoritesData.find((fav) => fav.id == 9);
-//       const index = favoritesData.indexOf(exactFavoriteObj);
-//       const objToUpdate = favoritesData[index];
-//       score = objToUpdate.score;
-//       if (!isScore) {
-//         score++;
-//         isScore = true;
-//       }
-//       objToUpdate.score = score;
-//       favoritesData[index] = objToUpdate;
-//       // console.log(index);
-//       // console.log(objToUpdate);
-//       // console.log(exactFavoriteObj);
-//       // console.log(favoritesData);
-//       updateDoc(frankDocRef, {
-//         favorites: favoritesData,
-//       });
-//     });
-//   });
-// }
-
-// incrementTest();

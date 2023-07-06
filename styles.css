@@ -19,7 +19,7 @@ html {
 
 body {
   margin: 0;
-  padding: 100px 0 30px 0;
+  padding: 100px 0 0 0;
   font-family: "Rubik", sans-serif;
   line-height: calc(1rem * 1.5);
   background-color: var(--primary-smooth-gray);
@@ -29,18 +29,20 @@ body {
 @media only screen and (max-width: 600px) {
   body {
     margin: 0;
-    padding: 60px 8px 30px 8px;
+    padding: 60px 0 0 0;
   }
 }
 
 .container {
   width: 800px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 600px) {
   .container {
     width: 100%;
+    padding: 0 8px;
   }
 }
 
@@ -411,4 +413,16 @@ textarea {
 
 .delete-prompt-and-bg {
   display: none;
+}
+
+/* footer */
+
+footer {
+  background-color: var(--on-primary);
+  color: var(--primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 0;
+  margin-top: 30px;
 }

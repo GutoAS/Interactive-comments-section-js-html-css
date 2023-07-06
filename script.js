@@ -87,6 +87,7 @@ document.addEventListener("click", function (e) {
     handleEditBtnClick(e.target.dataset.editCommentBtn);
   }
 });
+
 async function handleCurrentUserSendBtn() {
   const currentUserComment = document.getElementById("currentUserComment");
   if (currentUserComment.value) {
@@ -109,36 +110,79 @@ async function handleCurrentUserSendBtn() {
 }
 
 function incrementScore(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  if (comment) {
-    comment.score++;
-  }
-  dataDB.comments.forEach((comment) => {
-    comment.replies.forEach((reply) => {
-      if (reply.id == id) {
-        reply.score++;
-        // render();
+  let isScore = false;
+  let score = "";
+  onSnapshot(colRef, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const commentsData = doc.data().comments;
+      const exactComment = commentsData.find((comment) => comment.id == id);
+      const index = commentsData.indexOf(exactComment);
+      const objToUpdate = commentsData[index];
+      score = objToUpdate.score;
+      if (!isScore) {
+        score++;
+        isScore = true;
       }
+      objToUpdate.score = score;
+      commentsData[index] = objToUpdate;
+
+      updateDoc(userDataRef, {
+        comments: commentsData,
+      });
+
+      render(doc.data());
     });
   });
+  // dataDB.comments.forEach((comment) => {
+  //   comment.replies.forEach((reply) => {
+  //     if (reply.id == id) {
+  //       reply.score++;
+  //       // render();
+  //     }
+  //   });
+  // });
   // render();
 }
 
 function decrementScore(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  if (comment) {
-    if (comment.score > 0) {
-      comment.score--;
-    }
-  }
-  dataDB.comments.forEach((comment) => {
-    comment.replies.forEach((reply) => {
-      if (reply.id == id && reply.score > 0) {
-        reply.score--;
-        // render();
+  let isScore = false;
+  let score = "";
+  onSnapshot(colRef, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const commentsData = doc.data().comments;
+      const exactComment = commentsData.find((comment) => comment.id == id);
+      const index = commentsData.indexOf(exactComment);
+      const objToUpdate = commentsData[index];
+      score = objToUpdate.score;
+      if (!isScore) {
+        score--;
+        isScore = true;
       }
+      objToUpdate.score = score;
+      commentsData[index] = objToUpdate;
+
+      updateDoc(userDataRef, {
+        comments: commentsData,
+      });
+
+      render(doc.data());
     });
   });
+
+  // const comment = dataDB.comments.find((comment) => comment.id == id);
+  // if (comment) {
+  //   if (comment.score > 0) {
+  //     comment.score--;
+  //   }
+  // }
+  // dataDB.comments.forEach((comment) => {
+  //   comment.replies.forEach((reply) => {
+  //     if (reply.id == id && reply.score > 0) {
+  //       reply.score--;
+  //       // render();
+  //     }
+  //   });
+  // });
   // render();
 }
 
@@ -560,3 +604,64 @@ function render(data) {
 }
 
 // render();
+// !testing
+const colRefTest = collection(db, "test");
+const frankDocRef = doc(db, "test", "frank");
+// await setDoc(frankDocRef, {
+//   name: "Frank",
+//   favorites: { food: "Pizza", color: "Blue", subject: "recess", score: 7 },
+//   age: 12,
+// });
+
+// await updateDoc(frankDocRef, {
+//   age: 13,
+//   "favorites.color": ["Red", "Green", "Blue"],
+// });
+
+// onSnapshot(colRefTest, (querySnapshot) => {
+//   querySnapshot.forEach((doc) => {
+//     const dataDoc = doc.data().favorites.find((comment) => comment.id == 1);
+//     console.log(dataDoc);
+
+//     updateDoc(frankDocRef, {
+//       favorites: arrayRemove(dataDoc),
+//     });
+
+//     let score = dataDoc.score;
+//     score++;
+
+//     dataDoc.score = score;
+
+//     updateDoc(frankDocRef, { favorites: arrayUnion(dataDoc) });
+
+//   });
+// });
+
+// function incrementTest() {
+//   let isScore = false;
+//   let score = "";
+//   onSnapshot(colRefTest, (querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//       let favoritesData = doc.data().favorites;
+//       let exactFavoriteObj = favoritesData.find((fav) => fav.id == 9);
+//       const index = favoritesData.indexOf(exactFavoriteObj);
+//       const objToUpdate = favoritesData[index];
+//       score = objToUpdate.score;
+//       if (!isScore) {
+//         score++;
+//         isScore = true;
+//       }
+//       objToUpdate.score = score;
+//       favoritesData[index] = objToUpdate;
+//       // console.log(index);
+//       // console.log(objToUpdate);
+//       // console.log(exactFavoriteObj);
+//       // console.log(favoritesData);
+//       updateDoc(frankDocRef, {
+//         favorites: favoritesData,
+//       });
+//     });
+//   });
+// }
+
+// incrementTest();

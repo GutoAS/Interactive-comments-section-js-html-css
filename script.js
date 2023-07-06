@@ -45,7 +45,10 @@ document.addEventListener("click", function (e) {
   const deletePrompt = document.getElementById("deletePrompt");
 
   if (e.target.dataset.sendMobileBtn || e.target.dataset.sendDesktopBtn) {
-    handleCurrentUserSendBtn();
+    handleSendCommentBtn();
+  }
+  if (e.target.dataset.sendReplyBtn) {
+    handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
   }
   if (e.target.dataset.plusBtn) {
     incrementScore(e.target.dataset.plusBtn);
@@ -56,9 +59,7 @@ document.addEventListener("click", function (e) {
   if (e.target.id === "replyButton" || e.target.id === "replyButtonMobile") {
     handleReplyButtonClick();
   }
-  if (e.target.dataset.sendReplyBtn) {
-    handleSendReplyButtonClick(e.target.dataset.sendReplyBtn);
-  }
+
   if (e.target.dataset.deleteCommentBtn) {
     deletePrompt.style.display = "block";
     commentId.id = e.target.dataset.deleteCommentBtn;
@@ -84,7 +85,7 @@ document.addEventListener("click", function (e) {
   }
 });
 
-async function handleCurrentUserSendBtn() {
+async function handleSendCommentBtn() {
   const currentUserComment = document.getElementById("currentUserComment");
   if (currentUserComment.value) {
     const pushCommentDB = {
@@ -103,6 +104,42 @@ async function handleCurrentUserSendBtn() {
     // render();
   }
   currentUserComment.value = "";
+}
+
+function handleSendReplyButtonClick(id) {
+  const textareaReply = document.getElementById("textareaReply" + id);
+  let isReplied = false;
+  if (textareaReply.value) {
+    const pushReplyDB = {
+      id: uuidv4(),
+      content: textareaReply.value,
+      createdAt: new Date().valueOf(),
+      score: 0,
+      user: {
+        ...currentUser,
+      },
+      replies: [],
+    };
+    onSnapshot(colRef, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const commentsData = doc.data().comments;
+        const exactComment = commentsData.find((comment) => comment.id == id);
+        const index = commentsData.indexOf(exactComment);
+        const objToUpdate = commentsData[index];
+        if (!isReplied) {
+          objToUpdate.replies.push(pushReplyDB);
+          isReplied = true;
+        }
+        commentsData[index] = objToUpdate;
+
+        updateDoc(userDataRef, {
+          comments: commentsData,
+        });
+      });
+    });
+  }
+  textareaReply.value = "";
+  // render();
 }
 
 function incrementScore(id) {
@@ -194,25 +231,6 @@ function handleReplyButtonClick() {
   for (let i = 0; i < replies.length; i++) {
     replies[i].classList.toggle("display-flex");
   }
-}
-
-function handleSendReplyButtonClick(id) {
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  const textareaReply = document.getElementById("textareaReply" + id);
-  if (textareaReply.value) {
-    comment.replies.push({
-      id: uuidv4(),
-      content: textareaReply.value,
-      createdAt: new Date().valueOf(),
-      score: 0,
-      user: {
-        ...dataDB.currentUser,
-      },
-      replies: [],
-    });
-  }
-  textareaReply.value = "";
-  // render();
 }
 
 async function handleDeleteComment(id) {

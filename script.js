@@ -281,11 +281,21 @@ function handleUpdateComment(id) {
     querySnapshot.forEach((doc) => {
       const commentsData = doc.data().comments;
       const exactComment = commentsData.find((comment) => comment.id == id);
-      const index = commentsData.indexOf(exactComment);
-      const objToUpdate = commentsData[index];
 
-      objToUpdate.content = tweetContent.innerText;
-      commentsData[index] = objToUpdate;
+      if (exactComment) {
+        const index = commentsData.indexOf(exactComment);
+        const objToUpdate = commentsData[index];
+        objToUpdate.content = tweetContent.innerText;
+        commentsData[index] = objToUpdate;
+      }
+
+      commentsData.forEach((comment) => {
+        comment.replies.forEach((reply) => {
+          if (reply.id == id) {
+            reply.content = tweetContent.innerText;
+          }
+        });
+      });
 
       updateDoc(userDataRef, {
         comments: commentsData,
@@ -294,15 +304,6 @@ function handleUpdateComment(id) {
       render(doc.data());
     });
   });
-
-  // dataDB.comments.forEach((comment) => {
-  //   let replyObj = comment.replies.find((reply) => reply.id == id);
-  //   if (replyObj) {
-  //     replyObj.content = tweetContent.innerText;
-  //   }
-  // });
-
-  // render();
 }
 
 function handleEditBtnClick(id) {

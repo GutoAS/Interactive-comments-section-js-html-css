@@ -31,6 +31,7 @@ let currentUser = {};
 currentUserData.forEach((users) => {
   currentUser = { ...users.data().currentUser };
 });
+
 onSnapshot(colRef, (querySnapshot) => {
   querySnapshot.forEach((doc) => {
     render(doc.data());
@@ -107,6 +108,7 @@ async function handleCurrentUserSendBtn() {
 function incrementScore(id) {
   let isScore = false;
   let score = "";
+
   onSnapshot(colRef, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       const commentsData = doc.data().comments;
@@ -141,18 +143,24 @@ function incrementScore(id) {
 
 function decrementScore(id) {
   let isScore = false;
-  let score = "";
+  let isZero = false;
   onSnapshot(colRef, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       const commentsData = doc.data().comments;
       const exactComment = commentsData.find((comment) => comment.id == id);
       const index = commentsData.indexOf(exactComment);
       const objToUpdate = commentsData[index];
-      score = objToUpdate.score;
-      if (!isScore) {
+
+      let score = objToUpdate.score;
+
+      if (score == 0) {
+        isZero = true;
+      }
+      if (!isScore && !isZero) {
         score--;
         isScore = true;
       }
+
       objToUpdate.score = score;
       commentsData[index] = objToUpdate;
 

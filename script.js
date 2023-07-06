@@ -246,29 +246,32 @@ function handleReplyButtonClick() {
   }
 }
 
-async function handleDeleteComment(id) {
+function handleDeleteComment(id) {
   onSnapshot(colRef, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       const commentsData = doc.data().comments;
-      const comment = commentsData.find((comment) => comment.id == id);
-      render(doc.data());
-      updateDoc(userDataRef, {
-        comments: arrayRemove(comment),
+      const exactComment = commentsData.find((comment) => comment.id == id);
+      if (exactComment) {
+        updateDoc(userDataRef, {
+          comments: arrayRemove(exactComment),
+        });
+      }
+
+      commentsData.forEach((comment) => {
+        comment.replies.forEach((reply) => {
+          if (reply.id == id) {
+            const index = comment.replies.indexOf(reply);
+            comment.replies.splice(index, 1);
+          }
+        });
       });
+
+      updateDoc(userDataRef, {
+        comments: commentsData,
+      });
+      render(doc.data());
     });
   });
-
-  // const index = dataDB.comments.indexOf(comment);
-  // dataDB.comments.splice(index, 1);
-
-  // if (replyObj) {
-  //   let index = "";
-  //   dataDB.comments.forEach(
-  //     (comment) => (index = comment.replies.indexOf(replyObj))
-  //   );
-  //   dataDB.comments.forEach((comment) => comment.replies.splice(index, 1));
-  // }
-  // render();
 }
 
 function handleUpdateComment(id) {

@@ -242,17 +242,31 @@ async function handleDeleteComment(id) {
 
 function handleUpdateComment(id) {
   const tweetContent = document.getElementById("tweetContent" + id);
-  const comment = dataDB.comments.find((comment) => comment.id == id);
-  if (comment) {
-    comment.content = tweetContent.innerText;
-  }
 
-  dataDB.comments.forEach((comment) => {
-    let replyObj = comment.replies.find((reply) => reply.id == id);
-    if (replyObj) {
-      replyObj.content = tweetContent.innerText;
-    }
+  onSnapshot(colRef, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const commentsData = doc.data().comments;
+      const exactComment = commentsData.find((comment) => comment.id == id);
+      const index = commentsData.indexOf(exactComment);
+      const objToUpdate = commentsData[index];
+
+      objToUpdate.content = tweetContent.innerText;
+      commentsData[index] = objToUpdate;
+
+      updateDoc(userDataRef, {
+        comments: commentsData,
+      });
+
+      render(doc.data());
+    });
   });
+
+  // dataDB.comments.forEach((comment) => {
+  //   let replyObj = comment.replies.find((reply) => reply.id == id);
+  //   if (replyObj) {
+  //     replyObj.content = tweetContent.innerText;
+  //   }
+  // });
 
   // render();
 }

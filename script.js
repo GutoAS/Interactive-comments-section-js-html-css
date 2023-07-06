@@ -150,32 +150,41 @@ function incrementScore(id) {
     querySnapshot.forEach((doc) => {
       const commentsData = doc.data().comments;
       const exactComment = commentsData.find((comment) => comment.id == id);
-      const index = commentsData.indexOf(exactComment);
-      const objToUpdate = commentsData[index];
-      score = objToUpdate.score;
-      if (!isScore) {
-        score++;
-        isScore = true;
+
+      if (exactComment) {
+        const index = commentsData.indexOf(exactComment);
+        const objToUpdate = commentsData[index];
+        score = objToUpdate.score;
+        if (!isScore) {
+          score++;
+          isScore = true;
+        }
+        objToUpdate.score = score;
+        commentsData[index] = objToUpdate;
       }
-      objToUpdate.score = score;
-      commentsData[index] = objToUpdate;
+
+      commentsData.forEach((comment) => {
+        comment.replies.forEach((reply) => {
+          if (reply.id == id) {
+            const index = comment.replies.indexOf(reply);
+            const objToUpdate = comment.replies[index];
+            score = objToUpdate.score;
+            if (!isScore) {
+              score++;
+              isScore = true;
+            }
+            objToUpdate.score = score;
+            comment.replies[index] = objToUpdate;
+          }
+        });
+      });
 
       updateDoc(userDataRef, {
         comments: commentsData,
       });
-
       render(doc.data());
     });
   });
-  // dataDB.comments.forEach((comment) => {
-  //   comment.replies.forEach((reply) => {
-  //     if (reply.id == id) {
-  //       reply.score++;
-  //       // render();
-  //     }
-  //   });
-  // });
-  // render();
 }
 
 function decrementScore(id) {

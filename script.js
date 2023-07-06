@@ -1,4 +1,3 @@
-// import { dataDB } from "./data.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {

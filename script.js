@@ -37,11 +37,6 @@ onSnapshot(colRef, (querySnapshot) => {
   });
 });
 
-function getExactComment(id, data) {
-  const comment = data.comments.find((comment) => comment.id == id);
-  return comment;
-}
-
 //! this const store id when delete button is clicked
 const commentId = {};
 
@@ -215,7 +210,8 @@ function handleSendReplyButtonClick(id) {
 async function handleDeleteComment(id) {
   onSnapshot(colRef, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
-      const comment = getExactComment(id, doc.data());
+      const commentsData = doc.data().comments;
+      const comment = commentsData.find((comment) => comment.id == id);
       render(doc.data());
       updateDoc(userDataRef, {
         comments: arrayRemove(comment),

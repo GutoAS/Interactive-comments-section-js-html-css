@@ -630,7 +630,7 @@ function getTimeElapsed(date) {
     return second + " seconds ago";
   }
   if (minute < 60) {
-    if (minute <= 1) return minute + "minute ago";
+    if (minute <= 1) return minute + " minute ago";
     return minute + " minutes ago";
   }
   if (hour < 24) {
@@ -647,7 +647,7 @@ function getTimeElapsed(date) {
   }
   if (month <= 1) return month + " month ago";
 
-  return month + "months ago";
+  return month + " months ago";
 }
 
 function render(data) {

@@ -28,6 +28,8 @@ Users should be able to:
 
 ![](./screenshot.png)
 
+![](./screenshot1.png)
+
 ### Links
 
 - Solution URL: [Click here](https://www.frontendmentor.io/solutions/interactive-comments-section-q4NsWFc0ip)

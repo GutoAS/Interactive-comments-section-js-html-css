@@ -30,8 +30,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://interactivecommentsguto.netlify.app/)
+- Solution URL: [Click here](https://www.frontendmentor.io/solutions/interactive-comments-section-q4NsWFc0ip)
+- Live Site URL: [Click here](https://interactivecommentsguto.netlify.app/)
 
 ## My process
 

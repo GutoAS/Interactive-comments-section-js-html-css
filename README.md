@@ -9,7 +9,7 @@ This is a solution to the [Interactive comments section challenge on Frontend Me
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [My process](#my-process)
-  - [Built with](#built-with)S
+  - [Built with](#built-with)
 
 ## Overview
 
